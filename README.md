@@ -39,7 +39,7 @@ cd fallguard
 npx expo install expo-sensors expo-notifications expo-haptics
 
 ---
-3 Inicie o servidor de desenvolvimento
+3. Inicie o servidor de desenvolvimento
 npx expo start
 ---
 

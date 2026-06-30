@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Estimativa de Queda",
+    "slug": "estimativa-queda",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      [
+        "expo-sensors",
+        {
+          "motionPermission": "Permitir que o Estimativa de Queda acesse os sensores de movimento do dispositivo."
+        }
+      ],
+      "expo-notifications"
+    ],
+    "android": {
+      "package": "com.trabalho.estimativaqueda",
+      "permissions": [
+        "VIBRATE"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "com.trabalho.estimativaqueda"
+    },
+    "sdkVersion": "54.0.0"
+  }
+}

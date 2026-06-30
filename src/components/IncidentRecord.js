@@ -1,51 +1,67 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { colors, radius, spacing } from '../constants/theme';
+import { corners, gaps, palette } from '../constants/theme';
 
-export default function EventItem({ event }) {
+export default function IncidentRecord({ event }) {
   const date = new Date(event.timestamp);
 
   return (
-    <View style={styles.item}>
-      <Text style={styles.icon}>{event.simulated ? '🧪' : '⚠️'}</Text>
-      <View style={styles.content}>
-        <Text style={styles.title}>{event.simulated ? 'Alerta simulado' : 'Queda provável'}</Text>
-        <Text style={styles.description}>
-          {date.toLocaleDateString('pt-BR')} às {date.toLocaleTimeString('pt-BR')}
+    <View style={styles.eventCard}>
+      <View style={styles.infoContainer}>
+        <Text style={styles.heading}>
+          {event.simulated ? 'Simulação de Queda' : 'Queda Detectada!'}
         </Text>
-        <Text style={styles.description}>
-          Pico: {event.magnitude?.toFixed?.(3) || '-'} g | Sensibilidade: {event.sensitivity || '-'}
+        <Text style={styles.detailText}>
+          {date.toLocaleDateString('pt-BR')} • {date.toLocaleTimeString('pt-BR')}
         </Text>
+        <Text style={styles.detailText}>
+          Pico: {event.magnitude?.toFixed?.(3) || '-'} g | Nível: {event.sensitivity || '-'}
+        </Text>
+      </View>
+      <View style={styles.iconBadge}>
+        <Text style={styles.indicatorIcon}>{event.simulated ? '🧪' : '⚠️'}</Text>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  item: {
-    flexDirection: 'row',
-    backgroundColor: colors.card,
-    borderRadius: radius.md,
-    padding: spacing.md,
+  detailText: {
+    color: palette.textSecondary,
+    fontSize: 12,
+    marginTop: 4
+  },
+  eventCard: {
+    alignItems: 'center',
+    backgroundColor: palette.surface,
+    borderColor: palette.lineDivider,
+    borderRadius: corners.roundedMedium,
     borderWidth: 1,
-    borderColor: colors.border,
-    marginBottom: spacing.sm
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: gaps.small,
+    padding: gaps.medium
   },
-  icon: {
-    fontSize: 23,
-    marginRight: spacing.md
-  },
-  content: {
-    flex: 1
-  },
-  title: {
-    color: colors.text,
+  heading: {
+    color: palette.textPrimary,
+    fontSize: 15,
     fontWeight: '800',
-    fontSize: 15
+    letterSpacing: 0.5,
+    marginBottom: 2
   },
-  description: {
-    color: colors.textLight,
-    marginTop: 3,
-    fontSize: 12
+  iconBadge: {
+    alignItems: 'center',
+    backgroundColor: palette.brandDark,
+    borderRadius: corners.roundedSmall,
+    height: 44,
+    justifyContent: 'center',
+    width: 44
+  },
+  indicatorIcon: {
+    fontSize: 20
+  },
+  infoContainer: {
+    flex: 1,
+    paddingRight: gaps.medium
   }
 });

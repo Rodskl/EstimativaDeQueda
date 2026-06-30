@@ -11,10 +11,12 @@ import {
 } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
 import * as Haptics from 'expo-haptics';
+
 import StatWidget from '../components/StatWidget';
 import ConditionPanel from '../components/ConditionPanel';
 import IncidentRecord from '../components/IncidentRecord';
 import { corners, gaps, palette } from '../constants/theme';
+
 import {
   BASE_TRACKING_STATE,
   DETECTION_PROFILES,
@@ -127,7 +129,6 @@ export default function HomeScreen() {
       type: 'fall',
       variation: 0.12
     };
-
     handleFallDetected(simulatedEvent);
   }
 
@@ -150,11 +151,7 @@ export default function HomeScreen() {
   }
 
   const statusTone = lastAlert ? 'danger' : phase === 'normal' ? 'normal' : 'warning';
-  const statusTitle = lastAlert
-    ? 'QUEDA DETECTADA'
-    : isMonitoring
-      ? fetchStatusLabel(phase)
-      : 'SISTEMA INATIVO';
+  const statusTitle = lastAlert ? 'QUEDA DETECTADA' : isMonitoring ? fetchStatusLabel(phase) : 'SISTEMA INATIVO';
   const statusSubtitle = lastAlert
     ? 'Possível acidente registrado. Pressione o botão abaixo se você estiver bem.'
     : isMonitoring
@@ -162,24 +159,22 @@ export default function HomeScreen() {
       : 'Ligue o rastreamento para iniciar a telemetria.';
 
   return (
-    <ScrollView style={styles.mainContainer} contentContainerStyle={styles.scrollContent}>
+    <ScrollView contentContainerStyle={styles.scrollContent} style={styles.mainContainer}>
       
-
       <View style={styles.heroSection}>
         <View style={styles.heroTextWrapper}>
           <Text style={styles.heroTitle}>FallGuard</Text>
           <Text style={styles.heroSubtitle}>Monitoramento Ativo</Text>
         </View>
-        <Switch
-          onValueChange={toggleMonitoring}
-          thumbColor={isMonitoring ? palette.textPrimary : palette.textSecondary}
-          trackColor={{ false: palette.lineDivider, true: palette.brandMain }}
-          value={isMonitoring}
-          style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
+        <Switch 
+          onValueChange={toggleMonitoring} 
+          thumbColor={isMonitoring ? palette.textPrimary : palette.textSecondary} 
+          trackColor={{ false: palette.lineDivider, true: palette.brandMain }} 
+          value={isMonitoring} 
+          style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }} 
         />
       </View>
 
-  
       <View style={styles.statusSection}>
         <ConditionPanel subtitle={statusSubtitle} title={statusTitle} tone={statusTone} />
       </View>
@@ -198,15 +193,14 @@ export default function HomeScreen() {
         <StatWidget label="Z" value={formatAccelerationG(acceleration.z)} />
       </View>
 
-  
       <View style={styles.glassPanel}>
         <Text style={styles.sectionLabel}>Perfil de Sensibilidade</Text>
         <View style={styles.pillContainer}>
           {Object.entries(DETECTION_PROFILES).map(([key, item]) => {
             const selected = key === sensitivityKey;
             return (
-              <Pressable
-                key={key}
+              <Pressable 
+                key={key} 
                 onPress={() => changeSensitivity(key)}
                 style={[styles.pillButton, selected && styles.pillButtonActive]}
               >
@@ -219,7 +213,6 @@ export default function HomeScreen() {
         </View>
         <Text style={styles.infoText}>{sensitivity.description}</Text>
       </View>
-
 
       <View style={styles.historyHeader}>
         <Text style={styles.sectionLabel}>Últimos Registros</Text>
@@ -236,7 +229,6 @@ export default function HomeScreen() {
         events.map((event) => <IncidentRecord event={event} key={event.id} />)
       )}
 
-      {/* Botão Inferior Fantasma */}
       <Pressable onPress={simulateFall} style={styles.ghostBtn}>
         <Text style={styles.ghostBtnText}>Testar Simulação de Impacto</Text>
       </Pressable>
@@ -246,150 +238,28 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  clearText: {
-    color: palette.brandMain,
-    fontSize: 14,
-    fontWeight: '700'
-  },
-  dismissAlertButton: {
-    alignItems: 'center',
-    backgroundColor: palette.alertCritical,
-    borderRadius: corners.roundedLarge,
-    elevation: 10,
-    marginBottom: gaps.large,
-    padding: gaps.medium,
-    shadowColor: palette.alertCritical,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8
-  },
-  dismissAlertText: {
-    color: palette.textPrimary,
-    fontSize: 16,
-    fontWeight: '900',
-    letterSpacing: 1
-  },
-  emptyState: {
-    alignItems: 'center',
-    backgroundColor: palette.surface,
-    borderColor: palette.lineDivider,
-    borderRadius: corners.roundedMedium,
-    borderStyle: 'dashed',
-    borderWidth: 1,
-    padding: gaps.large
-  },
-  emptyStateText: {
-    color: palette.textSecondary,
-    fontSize: 14
-  },
-  ghostBtn: {
-    alignItems: 'center',
-    borderColor: palette.lineDivider,
-    borderRadius: corners.roundedLarge,
-    borderWidth: 1,
-    marginTop: gaps.large,
-    padding: gaps.medium
-  },
-  ghostBtnText: {
-    color: palette.textSecondary,
-    fontSize: 14,
-    fontWeight: '700',
-    textTransform: 'uppercase'
-  },
-  glassPanel: {
-    backgroundColor: palette.surface,
-    borderRadius: corners.roundedLarge,
-    marginBottom: gaps.large,
-    padding: gaps.large
-  },
-  heroSection: {
-    alignItems: 'center',
-    backgroundColor: palette.surface,
-    borderRadius: corners.roundedLarge,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: gaps.small,
-    padding: gaps.large
-  },
-  heroSubtitle: {
-    color: palette.brandMain,
-    fontSize: 14,
-    fontWeight: '600',
-    marginTop: 4,
-    textTransform: 'uppercase'
-  },
-  heroTextWrapper: {
-    flex: 1
-  },
-  heroTitle: {
-    color: palette.textPrimary,
-    fontSize: 32,
-    fontWeight: '900',
-    letterSpacing: -1
-  },
-  historyHeader: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: gaps.small
-  },
-  infoText: {
-    color: palette.textSecondary,
-    fontSize: 13,
-    lineHeight: 20,
-    marginTop: gaps.medium,
-    textAlign: 'center'
-  },
-  mainContainer: {
-    backgroundColor: palette.screenBg,
-    flex: 1
-  },
-  pillButton: {
-    alignItems: 'center',
-    borderRadius: corners.roundedLarge,
-    flex: 1,
-    paddingVertical: gaps.small
-  },
-  pillButtonActive: {
-    backgroundColor: palette.brandMain,
-    shadowColor: palette.brandMain,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8
-  },
-  pillContainer: {
-    backgroundColor: palette.brandDark,
-    borderRadius: corners.roundedLarge,
-    flexDirection: 'row',
-    marginTop: gaps.small,
-    padding: 4
-  },
-  pillLabel: {
-    color: palette.textSecondary,
-    fontWeight: '800'
-  },
-  pillLabelActive: {
-    color: palette.brandDark
-  },
-  scrollContent: {
-    padding: gaps.medium,
-    paddingBottom: gaps.extraLarge
-  },
-  sectionLabel: {
-    color: palette.textPrimary,
-    fontSize: 15,
-    fontWeight: '800',
-    letterSpacing: 0.5,
-    marginBottom: gaps.small,
-    textTransform: 'uppercase'
-  },
-  statsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: gaps.small,
-    marginBottom: gaps.large
-  },
-  statusSection: {
-    marginBottom: gaps.large
-  }
+  clearText: { color: palette.brandMain, fontSize: 14, fontWeight: '700' },
+  dismissAlertButton: { alignItems: 'center', backgroundColor: palette.alertCritical, borderRadius: corners.roundedLarge, elevation: 10, marginBottom: gaps.large, padding: gaps.medium, shadowColor: palette.alertCritical, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8 },
+  dismissAlertText: { color: palette.textPrimary, fontSize: 16, fontWeight: '900', letterSpacing: 1 },
+  emptyState: { alignItems: 'center', backgroundColor: palette.surface, borderColor: palette.lineDivider, borderRadius: corners.roundedMedium, borderStyle: 'dashed', borderWidth: 1, padding: gaps.large },
+  emptyStateText: { color: palette.textSecondary, fontSize: 14 },
+  ghostBtn: { alignItems: 'center', borderColor: palette.lineDivider, borderRadius: corners.roundedLarge, borderWidth: 1, marginTop: gaps.large, padding: gaps.medium },
+  ghostBtnText: { color: palette.textSecondary, fontSize: 14, fontWeight: '700', textTransform: 'uppercase' },
+  glassPanel: { backgroundColor: palette.surface, borderRadius: corners.roundedLarge, marginBottom: gaps.large, padding: gaps.large },
+  heroSection: { alignItems: 'center', backgroundColor: palette.surface, borderRadius: corners.roundedLarge, flexDirection: 'row', justifyContent: 'space-between', marginBottom: gaps.small, padding: gaps.large },
+  heroSubtitle: { color: palette.brandMain, fontSize: 14, fontWeight: '600', marginTop: 4, textTransform: 'uppercase' },
+  heroTextWrapper: { flex: 1 },
+  heroTitle: { color: palette.textPrimary, fontSize: 32, fontWeight: '900', letterSpacing: -1 },
+  historyHeader: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: gaps.small },
+  infoText: { color: palette.textSecondary, fontSize: 13, lineHeight: 20, marginTop: gaps.medium, textAlign: 'center' },
+  mainContainer: { backgroundColor: palette.screenBg, flex: 1 },
+  pillButton: { alignItems: 'center', borderRadius: corners.roundedLarge, flex: 1, paddingVertical: gaps.small },
+  pillButtonActive: { backgroundColor: palette.brandMain, shadowColor: palette.brandMain, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 8 },
+  pillContainer: { backgroundColor: palette.brandDark, borderRadius: corners.roundedLarge, flexDirection: 'row', marginTop: gaps.small, padding: 4 },
+  pillLabel: { color: palette.textSecondary, fontWeight: '800' },
+  pillLabelActive: { color: palette.brandDark },
+  scrollContent: { padding: gaps.medium, paddingBottom: gaps.extraLarge },
+  sectionLabel: { color: palette.textPrimary, fontSize: 15, fontWeight: '800', letterSpacing: 0.5, marginBottom: gaps.small, textTransform: 'uppercase' },
+  statsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: gaps.small, marginBottom: gaps.large },
+  statusSection: { marginBottom: gaps.large }
 });

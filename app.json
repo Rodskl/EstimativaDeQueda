@@ -1,27 +1,28 @@
 {
   "expo": {
-    "name": "Estimativa de Queda",
-    "slug": "estimativa-queda",
+    "name": "FallGuard",
+    "slug": "fallguard",
     "version": "1.0.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0F172A",
     "plugins": [
       [
         "expo-sensors",
         {
-          "motionPermission": "Permitir que o Estimativa de Queda acesse os sensores de movimento do dispositivo."
+          "motionPermission": "Permitir que o FallGuard acesse os sensores de movimento deste dispositivo para monitoramento contínuo de quedas."
         }
       ],
       "expo-notifications"
     ],
     "android": {
-      "package": "com.trabalho.estimativaqueda",
+      "package": "com.trabalho.fallguard",
       "permissions": [
         "VIBRATE"
       ]
     },
     "ios": {
-      "bundleIdentifier": "com.trabalho.estimativaqueda"
+      "bundleIdentifier": "com.trabalho.fallguard"
     },
     "sdkVersion": "54.0.0"
   }

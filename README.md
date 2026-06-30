@@ -32,14 +32,17 @@ Siga os passos abaixo no terminal do seu computador:
 1. Inicialize um novo projeto Expo**
 
 npx create-expo-app fallguard
+
 cd fallguard
  
 ---
 2. Instale as dependências extras
+
 npx expo install expo-sensors expo-notifications expo-haptics
 
 ---
 3. Inicie o servidor de desenvolvimento
+
 npx expo start
 ---
 

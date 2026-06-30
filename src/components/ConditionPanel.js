@@ -1,42 +1,54 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { colors, radius, spacing } from '../constants/theme';
+import { corners, gaps, palette } from '../constants/theme';
 
-export default function MetricCard({ label, value, helper }) {
+export default function ConditionPanel({ subtitle, title, tone = 'normal' }) {
+  const isDanger = tone === 'danger';
+  const isWarning = tone === 'warning';
+  const statusColor = isDanger ? palette.alertCritical : isWarning ? palette.alertCaution : palette.alertPositive;
+
   return (
-    <View style={styles.card}>
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.value}>{value}</Text>
-      {helper ? <Text style={styles.helper}>{helper}</Text> : null}
+    <View style={[styles.statusWrapper, { borderColor: statusColor }]}> 
+      <View style={styles.contentBox}>
+        <Text style={[styles.primaryHeading, { color: statusColor }]}>{title}</Text>
+        <Text style={styles.secondaryText}>{subtitle}</Text>
+      </View>
+      <View style={[styles.statusDot, { backgroundColor: statusColor, shadowColor: statusColor }]} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
+  contentBox: {
     flex: 1,
-    minWidth: '30%',
-    backgroundColor: colors.card,
-    borderRadius: radius.md,
-    padding: spacing.md,
+    paddingRight: gaps.medium
+  },
+  primaryHeading: {
+    fontSize: 16,
+    fontWeight: '900',
+    letterSpacing: 0.5
+  },
+  secondaryText: {
+    color: palette.textSecondary,
+    fontSize: 13,
+    lineHeight: 18,
+    marginTop: 6
+  },
+  statusDot: {
+    borderRadius: 8,
+    height: 16,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    width: 16
+  },
+  statusWrapper: {
+    alignItems: 'center',
+    backgroundColor: palette.brandDark,
+    borderRadius: corners.roundedMedium,
     borderWidth: 1,
-    borderColor: colors.border
-  },
-  label: {
-    color: colors.textLight,
-    fontSize: 12,
-    fontWeight: '700',
-    textTransform: 'uppercase'
-  },
-  value: {
-    color: colors.text,
-    fontSize: 20,
-    fontWeight: '800',
-    marginTop: spacing.xs
-  },
-  helper: {
-    color: colors.textLight,
-    fontSize: 12,
-    marginTop: spacing.xs
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: gaps.large
   }
 });
